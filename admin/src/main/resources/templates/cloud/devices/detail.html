@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+    <div class="timo-detail-page">
+        <div class="timo-detail-title">基本信息</div>
+        <table class="layui-table timo-detail-table">
+            <colgroup>
+                <col width="100px"><col>
+                <col width="100px"><col>
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>主键ID</th>
+                    <td th:text="${devices.id}"></td>
+                    <th>设备名称</th>
+                    <td th:text="${devices.deviceName}"></td>
+                </tr>
+                <tr>
+                    <th>设备ID</th>
+                    <td th:text="${devices.deviceID}"></td>
+                    <th>是否在线</th>
+                    <td th:text="${#dicts.keyValue('DEVICE_ONLINE',devices.isOnline)}"></td>
+                </tr>
+                <tr>
+                    <th>手机号</th>
+                    <td th:text="${devices.phoneNum}"></td>
+                    <th>IP地址</th>
+                    <td th:text="${devices.ipAddress}"></td>
+                </tr>
+                <tr>
+                    <th>激活码</th>
+                    <td th:text="${devices.license.invitationCode}"></td>
+                    <th>激活码类型</th>
+                    <td th:text="${#dicts.keyValue('LICENSE_TYPE',devices.license.type)}"></td>
+                </tr>
+                <tr>
+                    <th>任务状态</th>
+                    <td th:text="${#dicts.keyValue('TASK_STATUS', devices.taskStatus)}"></td>
+                    <th>注册状态</th>
+                    <td th:text="${#dicts.keyValue('REGIST_STATUS', devices.registerStatus)}"></td>
+                </tr>
+                <tr>
+                    <th>设备类型</th>
+                    <td th:text="${#dicts.keyValue('DEVICE_TYPE',devices.deviceType)}" colspan="3"></td>
+                </tr>
+                <tr>
+                    <th>创建者</th>
+                    <td th:text="${devices.createBy?.nickname}"></td>
+                    <th>更新者</th>
+                    <td th:text="${devices.updateBy?.nickname}"></td>
+                </tr>
+                <tr>
+                    <th>创建时间</th>
+                    <td th:text="${#dates.format(devices.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <th>更新时间</th>
+                    <td th:text="${#dates.format(devices.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+                <tr>
+                    <th>备注</th>
+                    <td th:text="${devices.remark}" colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>

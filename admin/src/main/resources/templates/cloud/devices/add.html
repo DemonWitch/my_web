@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/Timo">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+    <div class="layui-form timo-compile">
+    <form th:action="@{/cloud/devices/save}">
+        <input type="hidden" name="id" th:if="${devices}" th:value="${devices.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">设备名称</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="deviceName" placeholder="请输入设备名称" th:value="${devices?.deviceName}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">设备ID</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="deviceID" placeholder="请输入设备ID" th:value="${devices?.deviceID}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="phoneNum" placeholder="请输入手机号" th:value="${devices?.phoneNum}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否在线</label>
+            <div class="layui-input-inline">
+                <select name="isOnline" mo:dict="DEVICE_ONLINE" mo-selected="${devices?.isOnline}" lay-verify="isOnline"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">任务状态</label>
+            <div class="layui-input-inline">
+                <select name="taskStatus" mo:dict="TASK_STATUS" mo-selected="${devices?.taskStatus}" lay-verify="taskStatus"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">注册状态</label>
+            <div class="layui-input-inline">
+                <select name="registerStatus" mo:dict="REGIST_STATUS" mo-selected="${devices?.registerStatus}" lay-verify="registerStatus"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">设备类型</label>
+            <div class="layui-input-inline">
+                <select name="deviceType" mo:dict="DEVICE_TYPE" mo-selected="${devices?.deviceType}" lay-verify="deviceType"></select>
+
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${devices?.remark}]]</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item timo-finally">
+            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>

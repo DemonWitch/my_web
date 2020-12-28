@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+    <div class="timo-detail-page">
+        <div class="timo-detail-title">基本信息</div>
+        <table class="layui-table timo-detail-table">
+            <colgroup>
+                <col width="100px"><col>
+                <col width="100px"><col>
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>主键ID</th>
+                    <td th:text="${scripts.id}"></td>
+                    <th>脚本名称</th>
+                    <td th:text="${scripts.scriptName}"></td>
+                </tr>
+                <tr>
+                    <th>脚本链接</th>
+                    <td th:text="${scripts.scriptUrl}"></td>
+                    <th>创建者</th>
+                    <td th:text="${scripts.createBy?.nickname}"></td>
+                </tr>
+                <tr>
+                    <th>更新者</th>
+                    <td th:text="${scripts.updateBy?.nickname}"></td>
+                    <th>创建时间</th>
+                    <td th:text="${#dates.format(scripts.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+                <tr>
+                    <th>更新时间</th>
+                    <td th:text="${#dates.format(scripts.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <th>备注</th>
+                    <td th:text="${scripts.remark}" colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>

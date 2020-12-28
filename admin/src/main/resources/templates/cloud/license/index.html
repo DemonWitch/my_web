@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/Timo">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body class="timo-layout-page">
+    <div class="layui-card">
+        <div class="layui-card-header timo-card-header">
+            <span><i class="fa fa-bars"></i> 授权码管理</span>
+            <i class="layui-icon layui-icon-refresh refresh-btn"></i>
+        </div>
+        <div class="layui-card-body">
+            <div class="layui-row timo-card-screen">
+                <div class="pull-left layui-form-pane timo-search-box">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">代理商</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="agent" th:value="${param.agent}" placeholder="请输入代理商" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否使用</label>
+                        <div class="layui-input-block timo-search-status">
+                            <select class="timo-search-select" name="isUsed" mo:dict="IS_USED" mo-selected="${param.isUsed}" mo-empty="全部"></select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">邀请码类型</label>
+                        <div class="layui-input-block timo-search-status">
+                            <select class="timo-search-select" name="type" mo:dict="LICENSE_TYPE" mo-selected="${param.type}" mo-empty="全部"></select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn timo-search-btn">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="pull-right screen-btn-group">
+                    <button class="layui-btn open-popup" data-title="添加授权码" th:attr="data-url=@{/cloud/license/add}" data-size="auto">
+                        <i class="fa fa-plus"></i> 添加</button>
+                </div>
+            </div>
+            <div class="timo-table-wrap">
+                <table class="layui-table timo-table">
+                    <thead>
+                    <tr>
+                        <th class="timo-table-checkbox">
+                            <label class="timo-checkbox"><input type="checkbox">
+                                <i class="layui-icon layui-icon-ok"></i></label>
+                        </th>
+                        <th class="sortable" data-field="id">主键ID</th>
+                        <th class="sortable" data-field="agent">代理商</th>
+                        <th class="sortable" data-field="invitationCode">邀请码</th>
+                        <th class="sortable" data-field="isUsed">是否使用</th>
+                        <th class="sortable" data-field="type">邀请码类型</th>
+                        <th class="sortable" data-field="createDate">创建时间</th>
+                        <th class="sortable" data-field="activationDate">激活时间</th>
+                        <th class="sortable" data-field="expireDate">过期时间</th>
+                        <th>说明</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item:${list}">
+                        <td><label class="timo-checkbox"><input type="checkbox" th:value="${item.id}">
+                            <i class="layui-icon layui-icon-ok"></i></label></td>
+                        <td th:text="${item.id}">主键ID</td>
+                        <td th:text="${item.agent}">代理商</td>
+                        <td th:text="${item.invitationCode}">邀请码</td>
+                        <td th:text="${#dicts.keyValue('IS_USED',item.isUsed)}">是否使用</td>
+                        <td th:text="${#dicts.keyValue('LICENSE_TYPE',item.type)}">邀请码类型</td>
+                        <td th:text="${#dates.format(item.createDate, 'yyyy-MM-dd HH:mm:ss')}">创建时间</td>
+                        <td th:text="${item.activationDate}">激活时间</td>
+                        <td th:text="${item.expireDate}">过期时间</td>
+                        <td th:text="${item.remark}">说明</td>
+                        <td>
+                            <a class="open-popup" data-title="编辑授权码" th:attr="data-url=@{'/cloud/license/edit/'+${item.id}}" data-size="auto" href="#">编辑</a>
+                            <a class="open-popup" data-title="详细信息" th:attr="data-url=@{'/cloud/license/detail/'+${item.id}}" data-size="800,600" href="#">详细</a>
+                            <a class="ajax-get" data-msg="您是否确认删除" th:href="@{/cloud/license/status/delete(ids=${item.id})}">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="/common/fragment :: page"></div>
+        </div>
+    </div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>

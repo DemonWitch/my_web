@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+    <div class="timo-detail-page">
+        <div class="timo-detail-title">基本信息</div>
+        <table class="layui-table timo-detail-table">
+            <colgroup>
+                <col width="100px"><col>
+                <col width="100px"><col>
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>主键ID</th>
+                    <td th:text="${license.id}"></td>
+                    <th>代理商</th>
+                    <td th:text="${license.agent}"></td>
+                </tr>
+                <tr>
+                    <th>邀请码</th>
+                    <td th:text="${license.invitationCode}"></td>
+                    <th>是否使用</th>
+                    <td th:text="${#dicts.keyValue('IS_USED',license.isUsed)}"></td>
+                </tr>
+                <tr>
+                    <th>邀请码类型</th>
+                    <td th:text="${#dicts.keyValue('LICENSE_TYPE',license.type)}"></td>
+                </tr>
+                <tr>
+                    <th>激活时间</th>
+                    <td th:text="${license.activationDate}"></td>
+                    <th>过期时间</th>
+                    <td th:text="${license.expireDate}"></td>
+                </tr>
+                <tr>
+                    <th>创建者</th>
+                    <td th:text="${license.createBy?.nickname}"></td>
+                    <th>更新者</th>
+                    <td th:text="${license.updateBy?.nickname}"></td>
+                </tr>
+                <tr>
+                    <th>创建时间</th>
+                    <td th:text="${#dates.format(license.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <th>更新时间</th>
+                    <td th:text="${#dates.format(license.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+                <tr>
+                    <th>说明</th>
+                    <td th:text="${license.remark}" colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/Timo">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+    <div class="layui-form timo-compile">
+    <form th:action="@{/cloud/apps/save}">
+        <input type="hidden" name="id" th:if="${apps}" th:value="${apps.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">APP名称</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="appName" placeholder="请输入APP名称" th:value="${apps?.appName}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">APP版本</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="appVersion" placeholder="请输入APP版本" th:value="${apps?.appVersion}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">APP包名</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="appPkgName" placeholder="请输入APP包名" th:value="${apps?.appPkgName}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">APP下载链接</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="appDownloadUrl" placeholder="请输入APP下载链接" th:value="${apps?.appDownloadUrl}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">APP类型</label>
+            <div class="layui-input-inline">
+                <select name="appType" mo:dict="APP_TYPE" mo-selected="${apps?.appType}" lay-verify="appType"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">最长执行时间</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="number" name="maxRunSeconds" placeholder="请输入最长执行时间"
+                       th:value="${apps?.maxRunSeconds}" lay-verify="number">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${apps?.remark}]]</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item timo-finally">
+            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script>
+    layui.extend({
+        common: "/common/template/main"  //改为上方代码所在文件的路径
+    }).use(['common'], function(){
+        var common = layui.common;
+        common.plusminus();
+    })
+</script>
+</body>
+</html>

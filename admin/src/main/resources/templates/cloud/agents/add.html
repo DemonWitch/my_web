@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/Timo">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+    <div class="layui-form timo-compile">
+    <form th:action="@{/cloud/agents/save}">
+        <input type="hidden" name="id" th:if="${agents}" th:value="${agents.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">代理商名称</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="agentName" placeholder="请输入代理商名称" th:value="${agents?.agentName}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">级别</label>
+            <div class="layui-input-inline">
+                <select name="level" mo:dict="AGENT_LEVEL" mo-selected="${agents?.level}" lay-verify="level"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="name" placeholder="请输入姓名" th:value="${agents?.name}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="phoneNum" placeholder="请输入电话" th:value="${agents?.phoneNum}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="address" placeholder="请输入地址" th:value="${agents?.address}">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${agents?.remark}]]</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item timo-finally">
+            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>

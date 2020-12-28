@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/Timo">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+        .license-value {
+            max-width: 358px;
+            height: 130px;
+            border: 1px solid #e6e6e6;
+        }
+        .license-value:hover,
+        .license-value:hover .control {
+            border-color: #C9C9C9;
+        }
+        .license-value .control {
+            padding: 4px 8px;
+            border-bottom: 1px solid #e6e6e6;
+        }
+        .license-value .control button {
+            margin: 0;
+            border-color: #ffffff;
+        }
+        .license-value .control button:hover {
+            border-color: #888888;
+        }
+        .license-value .control button .fa {
+            margin-right: 4px;
+            color: #888888;
+        }
+        .license-value .control .field-order .fa {
+            margin: 0;
+        }
+        .license-value .control .field-order.active {
+            border-color: #C9C9C9;
+        }
+        .license-value .content {
+            height: 95px;
+            padding: 2px 0;
+            overflow: auto;
+        }
+        .license-value .content .license-option {
+            margin: 0;
+            padding: 2px 0;
+            display: block;
+            width: 100%;
+            border: none;
+            text-indent: 4px;
+            font-size: 14px;
+        }
+        .license-value .content .license-option:hover {
+            background-color: rgba(1, 170, 237, 0.17);
+        }
+        .license-value .content .license-option.active {
+            background-color: rgba(1, 170, 237, 0.37);
+            font-weight: bold;
+        }
+        .license-value .content .license-option.error {
+            background-color: rgba(255, 16, 0, 0.41);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="layui-form timo-compile">
+    <form th:action="@{/cloud/license/save}">
+        <input type="hidden" name="id" th:if="${license}" th:value="${license.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">代理商</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="agent" placeholder="请输入代理商" >
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label required">邀请码</label>
+            <div class="layui-input-block">
+                <input id="licenseValue" name="invitationCode" type="hidden" >
+                <div class="license-value">
+                    <div class="control">
+                        <button class="field-add layui-btn layui-btn-primary layui-btn-xs">
+                            <i class="fa fa-plus-circle"></i>添加
+                        </button>
+                        <button class="field-del layui-btn layui-btn-primary layui-btn-xs">
+                            <i class="fa fa-minus-circle"></i>删除
+                        </button>
+                    </div>
+                    <div class="content"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邀请码类型</label>
+            <div class="layui-input-inline">
+                <select name="type" mo:dict="LICENSE_TYPE" mo-selected="${license?.type}" lay-verify="type"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">激活时间</label>
+            <div class="layui-input-inline">
+                <input class="ctime layui-input" type="text" name="activationDate" readonly placeholder="请输入激活时间" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">过期时间</label>
+            <div class="layui-input-inline">
+                <input class="ctime layui-input" type="text" name="expireDate" readonly placeholder="请输入过期时间" >
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${license?.remark}]]</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item timo-finally">
+            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script>
+        layui.use(['element'], function () {
+            var $ = layui.jquery;
+            // 默认变量
+            var active = null;
+            var option = $("<input class='license-option'>");
+            var reg = /^[0-9a-zA-Z]+$/;
+            var licenseValue = $("#licenseValue");
+
+            // 获取焦点是选项事件
+            $(document).on("focus", ".license-option", function () {
+                if (active != null) {
+                    active.removeClass("active");
+                }
+                active = $(this).addClass("active");
+            });
+
+            // 失去焦点是选项事件
+            $(document).on("blur", ".license-option", function () {
+                var kv = $(this).val();
+                if(kv.length === 8 && reg.test(kv)){
+                    $(this).removeClass("error");
+                    updateDict();
+                }else{
+                    $(this).addClass("error");
+                }
+            });
+
+            // 向下添加
+            var addOption = function () {
+                var clone = option.clone().val("").addClass("active");
+                active.after(clone).removeClass("active");
+                clone.focus();
+            };
+
+            // 输入框回车事件
+            $(document).on("keypress", ".license-option", function (e) {
+                if (e.keyCode === 13) {
+                    e.preventDefault();
+                    addOption();
+                }
+            });
+
+            // 添加字段
+            $(document).on("click", ".field-add", function (e) {
+                e.preventDefault();
+                if (active != null) {
+                    addOption();
+                } else {
+                    var clone = option.clone();
+                    $(".license-value>.content").append(clone);
+                    clone.focus().addClass("active");
+                }
+            });
+
+            // 删除字段
+            $(document).on("click", ".field-del", function (e) {
+                e.preventDefault();
+                if (active != null) {
+                    active.remove();
+                    active = null;
+                }
+                updateDict();
+            });
+
+
+            // 更新字典值
+            var updateDict = function () {
+                var value = "";
+                $(".license-value>.content input").each(function (key, val) {
+                    var kv = $(val).val();
+                    if(kv.length === 8 && reg.test(kv)){
+                        value += kv + ",";
+                    }
+                });
+                if (value !== "") {
+                    value = value.substr(0, value.length - 1);
+                }
+                licenseValue.val(value);
+            }
+
+        });
+</script>
+</body>
+</html>
